@@ -84,9 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[Stat(_stat)]),
-      ),
+      body: Center(child: Stat(_stat)),
     );
   }
 }

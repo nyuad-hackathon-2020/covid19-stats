@@ -6,6 +6,9 @@ import 'package:http/http.dart' as http;
 class Api {
   static const ENDPOINT = "https://api.covid19api.com/summary";
 
+  static const FIXTURE =
+      '{"Global":{"NewConfirmed":75176,"TotalConfirmed":1845470,"NewDeaths":5588,"TotalDeaths":114064,"NewRecovered":19595,"TotalRecovered":420872},"Countries":[{"Country":"ALA Aland Islands","CountryCode":"AX","Slug":"ala-aland-islands","NewConfirmed":0,"TotalConfirmed":0,"NewDeaths":0,"TotalDeaths":0,"NewRecovered":0,"TotalRecovered":0,"Date":"2020-04-13T14:02:36Z"}]}';
+
   /// The stats
   Stats _stats;
 
@@ -21,6 +24,9 @@ class Api {
     } else {
       throw Exception('Failed to load stats');
     }
+
+//    _stats = Stats(json.decode(FIXTURE));
+//    return _stats;
   }
 }
 
@@ -34,6 +40,10 @@ class Stats {
     List<String> countries = [];
 
     prefix = prefix.toLowerCase();
+
+    if ("global".startsWith(prefix)) {
+      countries.add("Global");
+    }
 
     if (response.containsKey("Countries")) {
       response["Countries"].forEach((country) {
@@ -61,7 +71,7 @@ class Stats {
       return null;
     }
 
-    return response["Countries"].where((country) {
+    return response["Countries"].firstWhere((country) {
       if (!country.containsKey("Country")) {
         return false;
       }
